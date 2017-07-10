@@ -1,0 +1,120 @@
+<html>
+	<head>
+		<script>
+			var estudiantes = [
+					
+			]
+
+			var validarNumero = function(numero){
+				return !isNaN(parseInt(numero));
+			}
+
+			var mostrarEstudiantes = function(estudiante){
+				var tabla = document.getElementById("listado-estudiantes");
+
+				var fila = tabla.insertRow(estudiantes.length);
+			    var codigo = fila.insertCell(0);
+			    var nombre = fila.insertCell(1);
+			    var nota = fila.insertCell(2);
+			    codigo.innerHTML = estudiante.codigo;
+			    nombre.innerHTML = estudiante.nombre;
+			    nota.innerHTML = estudiante.nota;
+
+			}
+
+			var registrarEstudiante = function(){
+				if(validarNumero(document.getElementById("nota").value)){
+					var estudiante = new Object;
+					estudiante.codigo = document.getElementById("codigo").value;
+					estudiante.nombre = document.getElementById("nombre").value;
+					estudiante.nota = document.getElementById("nota").value;
+
+					estudiantes.push(estudiante);
+					mostrarEstudiantes(estudiante);
+				}else{
+					alert("Ingrese un valor valido")
+				}
+			} 
+
+			var calcularPromedio = function(){
+				var promedio;
+				var sumaTotal = 0;
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					sumaTotal += parseInt(estudiante.nota);
+					console.log( estudiante );
+				}
+				promedio = sumaTotal / estudiantes.length;
+				alert("El promedio es: "+promedio);
+			} 
+
+			var calcularMayor = function(){
+				var mayor = estudiantes[0];
+				
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					if(estudiante.nota > mayor.nota ){
+						mayor = estudiante;
+					}
+				}
+				
+				alert("El mayor es: "+"codigo: " + mayor.codigo+", nombre: " + mayor.nombre+", nota: "+ mayor.nota);
+			} 
+
+			var calcularMenor = function(){
+				var menor = estudiantes[0];
+				
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					if(estudiante.nota < menor.nota ){
+						menor = estudiante;
+					}
+				}
+				
+				alert("El menor es: "+"codigo: " + menor.codigo+", nombre: " + menor.nombre+", nota: "+ menor.nota);
+			} 
+
+			var registrarClicks = function(){
+
+				document.getElementById("registrarEstudiante").addEventListener("click",registrarEstudiante);
+				document.getElementById("calcularPromedio").addEventListener("click",calcularPromedio);
+				document.getElementById("calcularMayor").addEventListener("click",calcularMayor);
+				document.getElementById("calcularMenor").addEventListener("click",calcularMenor);
+
+			}
+		</script>
+	</head>
+	<body onload="registrarClicks()">
+		<h3>Registro Estudiante</h3>
+		
+		<label>Codigo:</label><br />
+		<input id="codigo"><br />
+
+		<label>Nombre:</label><br />
+		<input id="nombre"><br />
+
+		<label>Nota:</label><br />
+		<input id="nota"><br />
+
+		<br />
+
+		<button id="registrarEstudiante">Registrar Estudiante</button>
+		<button id="calcularPromedio">Mostrar Promedio</button>
+		<button id="calcularMayor">Mostrar Nota Mayor</button>
+		<button id="calcularMenor">Mostrar Nota Menor</button>
+		<br />
+
+		<h3>Listado de Estudiantes</h3>
+
+		<table id="listado-estudiantes" style="border: 1px solid black;">
+			<thead>
+				<tr>
+					<th style="border: 1px solid black;">Codigo</th>
+					<th style="border: 1px solid black;">Nombre</th>
+					<th style="border: 1px solid black;">Nota</th>
+				</tr>
+			</thead>
+		</table>
+
+	</body>
+</html>

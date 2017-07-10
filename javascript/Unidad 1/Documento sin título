@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<script>
+			var estudiantes = [
+					{"codigo":"a2312", "nombre":"Carlos Martinez", nota: 3},
+					{"codigo":"t43tt", "nombre":"Aramon Cabañas", nota: 6},
+					{"codigo":"34533", "nombre":"Alberto Ramirez", nota: 6},
+					{"codigo":"3453tw", "nombre":"Jaime Benitez", nota: 7},
+					{"codigo":"r3wfe", "nombre":"Javier Gonzalez", nota: 10},
+					{"codigo":"3wefde", "nombre":"Bruno Messi", nota: 3},
+					{"codigo":"4rwefe", "nombre":"Roberto Suarez", nota: 5},
+					{"codigo":"efwerd", "nombre":"Matias Franco", nota: 6},
+					{"codigo":"fsefwe", "nombre":"Ariel Cartes", nota: 5},
+					{"codigo":"fwefwe", "nombre":"Maria Maccri", nota: 7}
+			]
+
+			var mostrarJSON = function(){
+				var texto = "";
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					texto += "codigo: " + estudiante.codigo+", nombre: " + estudiante.nombre+", nota: "+ estudiante.nota;
+					texto += "<br />";
+					console.log( estudiante );
+				}
+				document.getElementById("salida").innerHTML=texto;
+			} 
+
+			var calcularPromedio = function(){
+				var promedio;
+				var sumaTotal = 0;
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					sumaTotal += estudiante.nota;
+					console.log( estudiante );
+				}
+				promedio = sumaTotal / 10;
+				document.getElementById("salida").innerHTML="El promedio es: "+promedio;
+			} 
+
+			var calcularMayor = function(){
+				var mayor = estudiantes[0];
+				
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					if(estudiante.nota > mayor.nota ){
+						mayor = estudiante;
+					}
+				}
+				
+				document.getElementById("salida").innerHTML="El mayor es: "+"codigo: " + mayor.codigo+", nombre: " + mayor.nombre+", nota: "+ mayor.nota;
+			} 
+
+			var calcularMenor = function(){
+				var menor = estudiantes[0];
+				
+				for( var i = 0; i < estudiantes.length; i++ ){
+					var estudiante = estudiantes[i];
+					if(estudiante.nota < menor.nota ){
+						menor = estudiante;
+					}
+				}
+				
+				document.getElementById("salida").innerHTML="El menor es: "+"codigo: " + menor.codigo+", nombre: " + menor.nombre+", nota: "+ menor.nota;
+			} 
+
+		</script>
+	</head>
+	<body>
+		<button onclick="mostrarJSON()">mostrar Json</button>
+		<button onclick="calcularPromedio()">calcular Promedio</button>
+		<button onclick="calcularMayor()">calcular Mayor</button>
+		<button onclick="calcularMenor()">calcular Menor</button>
+		<br />
+		<div id="salida"></div>
+
+	</body>
+</html>
