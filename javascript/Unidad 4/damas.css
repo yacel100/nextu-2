@@ -1,0 +1,20 @@
+.tablero{
+
+}
+
+.fila{
+	height: 50px;
+}
+
+.celda{
+	width: 50px;
+	float: left;
+}
+
+.celda .blanca{
+	background-color: white;
+}
+
+.negra{
+	background-color: black;
+}
