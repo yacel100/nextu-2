@@ -22,11 +22,19 @@
 	background-color: black;
 }
 
-#circulo {
-    width: 100%;
-    height: 100%;
-    background: red;
+.circulo {
+    width: 70%;
+    height: 70%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     border-radius: 50%;
+	margin: 15%;
+}
+
+.azul{
+	background: blue;
+}
+
+.rojo{
+	background: red;
 }
