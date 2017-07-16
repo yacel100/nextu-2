@@ -22,7 +22,7 @@
 	background-color: black;
 }
 
-.circulo {
+.ficha {
     width: 70%;
     height: 70%;
     -moz-border-radius: 50%;
@@ -35,6 +35,6 @@
 	background: blue;
 }
 
-.rojo{
+.roja{
 	background: red;
 }
