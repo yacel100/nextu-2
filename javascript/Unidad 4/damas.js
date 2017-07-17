@@ -83,6 +83,7 @@ var inicializarTablero = function(){
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
 						  	$(idIzquierdo).append($("<div></div>").attr("class", "ficha roja"));
+						  	turno = azul;
 						  }
 						});
 					}
@@ -109,11 +110,12 @@ var inicializarTablero = function(){
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
 						  	$(idDerecho).append($("<div></div>").attr("class", "ficha roja"));
+						  	turno = azul;
 						  }
 						});
 					}
 				}
-				turno = azul;
+				
 			}else{
 				//verificamos si puede moverse hacia la izquierda
 				if( $(this).parent().attr("columna") > 1 ){
@@ -138,6 +140,7 @@ var inicializarTablero = function(){
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
 						  	$(idIzquierdo).append($("<div></div>").attr("class", "ficha azul"));
+						  	turno = roja;
 						  }
 						});
 					}
@@ -164,12 +167,12 @@ var inicializarTablero = function(){
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
 						  	$(idDerecho).append($("<div></div>").attr("class", "ficha azul"));
+							turno = roja;
 						  }
 						});
 					}
 				}
 
-				turno = roja;
 			}
 		}else{
 			//do nothing, no es su turno
@@ -177,7 +180,12 @@ var inicializarTablero = function(){
 	});
 
 	$('.ficha').mouseout(function(){
-		//$(this).draggable('disable');
+		//$(this).draggable( "option", "disabled", true );
+
+		//hack para eliminar las casillas dropables cuando se levanta el mouse o cambia de ficha
+		console.log("elimina droppables")
+		$(".celda").droppable();
+		$(".celda").droppable( "option", "disabled", true );
 	});
 };
 
