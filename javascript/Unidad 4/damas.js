@@ -58,7 +58,7 @@ var inicializarTablero = function(){
 
 
 	//agregamos que todas las celdas sean dropables
-	$(".celda").droppable( {disabled: true} );
+	$(".celda.blanca").droppable( {disabled: true} );
 
 
 	//agregamos el evento mouseover a todas las fichas
@@ -194,8 +194,7 @@ var inicializarTablero = function(){
 
 		//hack para eliminar las casillas dropables cuando se levanta el mouse o cambia de ficha
 		console.log("elimina droppables")
-		
-		$(".celda").droppable( "option", "disabled", true );
+		$(".celda.blanca").droppable( {disabled: true} );
 	});
 };
 
