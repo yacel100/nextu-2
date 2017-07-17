@@ -55,6 +55,12 @@ var inicializarTablero = function(){
 			}
 		}
 	}
+
+
+	//agregamos que todas las celdas sean dropables
+	$(".celda").droppable( {disabled: true} );
+
+
 	//agregamos el evento mouseover a todas las fichas
 	$('#tablero').on("mouseover", ".ficha", function(){
 		if($(this).hasClass(turno)){ //es su turno
@@ -79,6 +85,7 @@ var inicializarTablero = function(){
 					        }
 						});
 						$(idIzquierdo).droppable({
+						  disabled: false,
 						  tolerance: "fit",
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
@@ -106,6 +113,7 @@ var inicializarTablero = function(){
 					        }
 						});
 						$(idDerecho).droppable({
+						  disabled: false,
 						  tolerance: "fit",
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
@@ -136,6 +144,7 @@ var inicializarTablero = function(){
 					        }
 						});
 						$(idIzquierdo).droppable({
+						  disabled: false,
 						  tolerance: "fit",
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
@@ -163,6 +172,7 @@ var inicializarTablero = function(){
 					        }
 						});
 						$(idDerecho).droppable({
+						  disabled: false,
 						  tolerance: "fit",
 						  drop: function( event, ui ) {
 						  	$(ui.draggable).remove();
@@ -179,12 +189,12 @@ var inicializarTablero = function(){
 		}
 	});
 
-	$('.ficha').mouseout(function(){
+	$('#tablero').on("mouseout", ".ficha", function(){
 		//$(this).draggable( "option", "disabled", true );
 
 		//hack para eliminar las casillas dropables cuando se levanta el mouse o cambia de ficha
 		console.log("elimina droppables")
-		$(".celda").droppable();
+		
 		$(".celda").droppable( "option", "disabled", true );
 	});
 };
