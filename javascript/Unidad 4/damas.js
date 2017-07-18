@@ -6,8 +6,12 @@ $(document).ready(function(){
 var roja= "roja";
 azul = "azul";
 turno = roja;
+fichasAzules = 0;
+fichasRojas = 0;
 
 var inicializarTablero = function(){
+	fichasAzules = 0;
+	fichasRojas = 0;
 
 	for (fila = 1; fila <= 8; fila++) {
 		$('#tablero').append($("<div></div>").attr("class", "fila").attr("id", "f"+fila));
@@ -63,6 +67,11 @@ var inicializarTablero = function(){
 
 	//agregamos el evento mouseover a todas las fichas
 	$('#tablero').on("mouseover", ".ficha", function(){
+
+		$('#fichas-rojas').html(fichasRojas);
+		$('#fichas-azules').html(fichasAzules);
+		$('#turno').html(turno);
+
 		if($(this).hasClass(turno)){ //es su turno
 			//verificamos si puede moverse.
 			if(turno == roja){ //las rojas deben moverse hacia abajo
@@ -71,8 +80,38 @@ var inicializarTablero = function(){
 					//obtenemos la diagonal inferior izquierda
 					idIzquierdo = "#c"+(parseInt($(this).parent().attr("columna"))-1)+"-f"+(parseInt($(this).parent().attr("fila")) +1);
 					var izquierdo = $(idIzquierdo);
-					if((izquierdo).children().length > 0){
+					if(izquierdo.children().length > 0){
 						console.log("no puede mover a la izquierda");
+						//verificamos si podemos "comer" la ficha rival
+						if(izquierdo.children().hasClass(azul)){
+							console.log("es una ficha rival");
+							//es una ficha rival,verificar si puede "comerla"
+							var IdDiagonalIzquierdo = "#c"+(parseInt($(this).parent().attr("columna"))-2)+"-f"+(parseInt($(this).parent().attr("fila")) +2);
+							if($(IdDiagonalIzquierdo).children().length == 0){
+								console.log("puede comer la ficha rival");
+								//esta vacio, puede comer
+								$(IdDiagonalIzquierdo).droppable({
+								  disabled: false,
+								  tolerance: "fit",
+								  drop: function( event, ui ) {
+								  	$(ui.draggable).remove();
+								  	$(IdDiagonalIzquierdo).append($("<div></div>").attr("class", "ficha roja"));
+								  	turno = azul;
+								  	izquierdo.children().remove();
+								  	fichasAzules++;
+								  }
+								});
+								$(this).draggable({
+									revert : function(event, ui) {
+							            $(this).data("ui-draggable").originalPosition = {
+							                top : 0,
+							                left : 0
+							            };
+							            return !event;
+							        }
+								});
+							}
+						}
 					}else{
 						console.log("puede mover a la izquierda");
 						$(this).draggable({
@@ -101,6 +140,36 @@ var inicializarTablero = function(){
 					var derecho = $(idDerecho);
 					if((derecho).children().length > 0){
 						console.log("no puede mover a la derecha");
+						//verificamos si podemos "comer" la ficha rival
+						if(derecho.children().hasClass(azul)){
+							console.log("es una ficha rival");
+							//es una ficha rival,verificar si puede "comerla"
+							var IdDiagonalDerecho = "#c"+(parseInt($(this).parent().attr("columna"))+2)+"-f"+(parseInt($(this).parent().attr("fila")) +2);
+							if($(IdDiagonalDerecho).children().length == 0){
+								console.log("puede comer la ficha rival");
+								//esta vacio, puede comer
+								$(IdDiagonalDerecho).droppable({
+								  disabled: false,
+								  tolerance: "fit",
+								  drop: function( event, ui ) {
+								  	$(ui.draggable).remove();
+								  	$(IdDiagonalDerecho).append($("<div></div>").attr("class", "ficha roja"));
+								  	turno = azul;
+								  	derecho.children().remove();
+								  	fichasAzules++;
+								  }
+								});
+								$(this).draggable({
+									revert : function(event, ui) {
+							            $(this).data("ui-draggable").originalPosition = {
+							                top : 0,
+							                left : 0
+							            };
+							            return !event;
+							        }
+								});
+							}
+						}
 					}else{
 						console.log("puede mover a la derecha");
 						$(this).draggable({
@@ -132,6 +201,36 @@ var inicializarTablero = function(){
 					var izquierdo = $(idIzquierdo);
 					if((izquierdo).children().length > 0){
 						console.log("no puede mover a la izquierda");
+						//verificamos si podemos "comer" la ficha rival
+						if(izquierdo.children().hasClass(roja)){
+							console.log("es una ficha rival");
+							//es una ficha rival,verificar si puede "comerla"
+							var IdDiagonalIzquierdo = "#c"+(parseInt($(this).parent().attr("columna"))-2)+"-f"+(parseInt($(this).parent().attr("fila")) - 2);
+							if($(IdDiagonalIzquierdo).children().length == 0){
+								console.log("puede comer la ficha rival");
+								//esta vacio, puede comer
+								$(IdDiagonalIzquierdo).droppable({
+								  disabled: false,
+								  tolerance: "fit",
+								  drop: function( event, ui ) {
+								  	$(ui.draggable).remove();
+								  	$(IdDiagonalIzquierdo).append($("<div></div>").attr("class", "ficha azul"));
+								  	turno = roja;
+								  	izquierdo.children().remove();
+								  	fichasRojas++;
+								  }
+								});
+								$(this).draggable({
+									revert : function(event, ui) {
+							            $(this).data("ui-draggable").originalPosition = {
+							                top : 0,
+							                left : 0
+							            };
+							            return !event;
+							        }
+								});
+							}
+						}
 					}else{
 						console.log("puede mover a la izquierda");
 						$(this).draggable({
@@ -160,6 +259,36 @@ var inicializarTablero = function(){
 					var derecho = $(idDerecho);
 					if((derecho).children().length > 0){
 						console.log("no puede mover a la derecha");
+						//verificamos si podemos "comer" la ficha rival
+						if(derecho.children().hasClass(roja)){
+							console.log("es una ficha rival");
+							//es una ficha rival,verificar si puede "comerla"
+							var IdDiagonalDerecho = "#c"+(parseInt($(this).parent().attr("columna"))+2)+"-f"+(parseInt($(this).parent().attr("fila")) - 2);
+							if($(IdDiagonalDerecho).children().length == 0){
+								console.log("puede comer la ficha rival");
+								//esta vacio, puede comer
+								$(IdDiagonalDerecho).droppable({
+								  disabled: false,
+								  tolerance: "fit",
+								  drop: function( event, ui ) {
+								  	$(ui.draggable).remove();
+								  	$(IdDiagonalDerecho).append($("<div></div>").attr("class", "ficha azul"));
+								  	turno = roja;
+								  	derecho.children().remove();
+								  	fichasRojas++;
+								  }
+								});
+								$(this).draggable({
+									revert : function(event, ui) {
+							            $(this).data("ui-draggable").originalPosition = {
+							                top : 0,
+							                left : 0
+							            };
+							            return !event;
+							        }
+								});
+							}
+						}
 					}else{
 						console.log("puede mover a la derecha");
 						$(this).draggable({

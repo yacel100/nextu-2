@@ -38,3 +38,7 @@
 .roja{
 	background: red;
 }
+
+.ui-droppable-active{
+	background: gray;
+}
