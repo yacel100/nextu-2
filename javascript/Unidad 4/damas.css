@@ -1,7 +1,28 @@
+#container{
+	width:100%;
+}
+
+#izquierda{
+	width:50%;
+	float:left;
+}
+
+#derecha{
+	width:50%;
+	float:left;
+}
+
 #tablero{
 	width: 400px;
 	height: 400px;
 	border: 2px solid black;
+	margin: auto;
+}
+
+#recuento{
+	width: 200px;
+	height: 200px;
+	text-align: center;
 }
 
 .fila{

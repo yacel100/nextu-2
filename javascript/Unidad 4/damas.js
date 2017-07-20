@@ -14,7 +14,10 @@ var inicializarTablero = function(){
 	fichasAzules = 0;
 	fichasRojas = 0;
 	ganador = null;
+	turno = roja;
 
+	
+	$('#tablero').children().remove();
 	for (fila = 1; fila <= 8; fila++) {
 		$('#tablero').append($("<div></div>").attr("class", "fila").attr("id", "f"+fila));
 		for (columna = 1; columna <= 4; columna++) {
@@ -342,8 +345,21 @@ var inicializarTablero = function(){
 		$(".celda.blanca").droppable( {disabled: true} );
 
 		if(ganador != null){
-			$('#ganador').append("El ganador es: "+ganador);
+			$('#ganador').append("Las ganadoras son las "+ganador);
+			$('#dialog-message').dialog({
+			  modal: true,
+			  buttons: {
+				Ok: function() {
+				  $( this ).dialog( "close" );
+				}
+			  }
+			});
+			
+			$('#reiniciar-juego-btn').show();
 		}
+		
+			$('#reiniciar-juego-btn').click(inicializarTablero);
+		
 	});
 };
 

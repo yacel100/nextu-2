@@ -6,17 +6,32 @@
 		<script src="jquery-ui-1.12.1.js"></script>
 		<script src="damas.js"></script>
 		<link rel="stylesheet" href="damas.css">
+		<link rel="stylesheet" href="jquery-ui.css">
 	</head>
 	<body>
-		<h1>JUEGO DE DAMAS CLASICO</h1>
-		<div id="tablero">
-			
-		</div>
-		<h3>RECUENTO</h3>
-		<label>Turno:<span id="turno"></span></label><br/>
-		<label>Fichas Rojas:<span id="fichas-rojas"></span></label><br/>
-		<label>Fichas Azules:<span id="fichas-azules"></span></label><br/>
 
-		<h2 id="ganador"></h2>		
+		<center><h1>JUEGO DE DAMAS CLASICO</h1></center>
+		
+		<div id="container">
+			<div id="izquierda">
+				<div id="tablero"></div>
+			</div>
+			<div id="derecha">
+				<div id="recuento">
+					<h3>RECUENTO</h3>
+					<label>Turno:<span id="turno"></span></label><br/>
+					<label>Fichas Rojas:<span id="fichas-rojas"></span></label><br/>
+					<label>Fichas Azules:<span id="fichas-azules"></span></label><br/>
+					
+					<button id="reiniciar-juego-btn" class="ui-button ui-widget ui-corner-all">Jugar de nuevo!</button>
+					
+					<div id="dialog-message" title="Fin del Juego!">
+					  <p>
+						<span id="ganador"></span>
+					  </p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
