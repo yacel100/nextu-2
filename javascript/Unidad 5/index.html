@@ -5,12 +5,26 @@
     <meta name="viewport" content="width = device-width, initial-scale=1" charset="utf-8">
 
     <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+    <style type="text/css">
+    .mapa {
+        width: 100%;
+        height: 200px;
+        padding: 0;
+    }
+    </style>
 
     <script src="jquery-1.12.1.js"></script>
     <script src="jquery.mobile-1.4.5.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCb7ZbDy7nmc7SCKubQXHhDEbdkuYD_ehs" type="text/javascript"></script>
+
     <script type="text/javascript">
 
+    var hoteles = [];
+    var latitud = 39.545016;
+    var longitud = -89.348943;
+    var marcadorAgregar;
+    var marcadorDetalles;
     function cambiarPagina(page) {
 
         $.mobile.changePage("#" + page, {
@@ -19,11 +33,84 @@
 
     }
 
+    function mostrarDetalles(index) {
+        
+        var divDetalle = $('#datoHotel');
+        var detalles = "<b>Nombre</b>: "+ hoteles[index].nombre + "<br/>";
+        detalles += "<b>Ciudad</b>: "+ hoteles[index].ciudad + "<br/>";
+        detalles += "<b>Telefono</b>: "+ hoteles[index].telefono + "<br/>";
+        detalles += "<b>Estrellas</b>: "+ hoteles[index].estrellas + "<br/>";
+        detalles += "<b>Ubicacion</b>:<br/>";
+        
+        
+        divDetalle.html(detalles);
 
+        var latlng = new google.maps.LatLng(hoteles[index].latitud, hoteles[index].longitud); 
+
+        $.mobile.changePage("#paginaDatos", {
+            transition: "flip"
+        });
+
+        setTimeout(function(latlng){
+            var opciones = {            
+                zoom: 2,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP        
+            };
+
+            var mapaDetalle = new google.maps.Map(document.getElementById("divMapaDetalle"), opciones); 
+
+            marcadorDetalles = new google.maps.Marker({            
+                position: latlng,
+                map: mapaDetalle,
+                draggable: false        
+            });
+
+        }, 5000);
+
+    }
+
+    function mostrarMapa() {
+
+        var latlng = new google.maps.LatLng(latitud, longitud); 
+                
+        var opciones = {            
+            zoom: 2,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP        
+        };
+              
+        var mapa = new google.maps.Map(document.getElementById("divMapa"), opciones);   
+
+        marcadorAgregar = new google.maps.Marker({            
+            position: latlng,
+            map: mapa,
+            draggable: true,
+            title: "Hotel"        
+        });
+
+        google.maps.event.addListener(marcadorAgregar, 'dragend', function(event) {
+            latitud = event.latLng.lat();
+            longitud = event.latLng.lng();
+        });
+                       
+    }
+
+    
+
+
+    function limpiarCampos() {
+
+        $("#nombre").val("");
+        $("#ciudad").val("");
+        $("#telefono").val("");
+        $("#estrellas").val("");
+
+    }
+
+    
 
     $(document).ready(function() {
-
-        var hoteles = [];
 
         $("#boton1").click(function() {
 
@@ -31,12 +118,16 @@
             var ciudad = $("#ciudad").val();
             var telefono = $("#telefono").val();
             var estrellas = $("#estrellas").val();
+            var latitud = latitud;
+            var longitud = longitud;
 
             var hotel = {
                 nombre: nombre,
                 ciudad: ciudad,
                 telefono: telefono,
-                estrellas: estrellas
+                estrellas: estrellas,
+                latitud: latitud,
+                longitud: longitud
             }
 
             hoteles.push(hotel);
@@ -48,46 +139,22 @@
         });
 
 
-
         $("#btnListarHotel").click(function() {
 
-              var tablaHoteles = $("#tablaHoteles");
-              $(".hotel").remove();
+            var divHoteles = $("#divHoteles");
+            $(".hotel").remove();
 
-                for (var i = 0; i < clientes.length; i++) {
-
-                var tr = $("<tr></tr>");
-                tr.attr("class","hotel");
-
-                var td1 = $("<td></td>").text(hoteles[i].id);
-                var td2 = $("<td></td>").text(hoteles[i].nombre);
-                var td3 = $("<td></td>").text(hoteles[i].direccion);
-                var td4 = $("<td></td>").text(hoteles[i].telefono);
-                var td5 = $("<td></td>").text(hoteles[i].email);
-
-                tr.append(td1);
-                tr.append(td2);
-                tr.append(td3);
-                tr.append(td4);
-                tr.append(td5);
-
-                tablaClientes.append(tr);
-
-
+            for (var i = 0; i < hoteles.length; i++) {
+                var btn = $("<a></a>").text(hoteles[i].nombre);
+                btn.attr("onclick", "mostrarDetalles("+i+")");
+                btn.attr("class","ui-btn ui-shadow-icon hotel");
+                divHoteles.append(btn);
             }
 
             cambiarPagina("paginaListar");
         });
 
-
-        function limpiarCampos() {
-
-            $("#nombre").val("");
-            $("#ciudad").val("");
-            $("#telefono").val("");
-            $("#estrellas").val("");
-
-        }
+        setTimeout(mostrarMapa(), 2000);
 
     });
     </script>
@@ -100,8 +167,8 @@
             <div data-role="content">
                 <form>
 
-                    <a onclick="cambiarPagina('paginaRegistro')" class="ui-btn ui-icon-plus ui-btn-icon-left ui-shadow-icon">Registrar Hotel</a>
-                    <a id="btnListarHotel" class="ui-btn ui-icon-bars ui-btn-icon-left ui-shadow-icon">Listar Hoteles</a>
+                    <a onclick="cambiarPagina('paginaRegistro')" class="ui-btn ui-icon-plus ui-btn-icon-right ui-shadow-icon">Registrar Hotel</a>
+                    <a id="btnListarHotel" class="ui-btn ui-icon-bars ui-btn-icon-right ui-shadow-icon">Listar Hoteles</a>
 
                 </form>
             </div>
@@ -126,7 +193,8 @@
                         <input type="text" name="telefono" id="telefono">
                         <label for="estrellas">estrellas:</label>
                         <input type="text" name="estrellas" id="estrellas">
-
+                        <label for="divMapa">Ubicacion:</label>
+                        <div id="divMapa" class="mapa"></div>
                     </div>
                     <a id="boton1" class="ui-btn ui-icon-check ui-btn-icon-right ui-shadow-icon">Registrar Hotel </a>
                     <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
@@ -141,27 +209,34 @@
 
         <div data-role="page" id="paginaListar">
             <div data-role="header">
-                <h1>Listado Cliente</h1>
+                <h1>Listado Hoteles</h1>
             </div>
             <div data-role="content">
 
 
-                <table id="tablaClientes" style="width:100%" border="1">
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
-                        <th>E-mail</th>
-                    </tr>
-
-                </table>
+                <div id="divHoteles"></div>
 
                 <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
 
             </div>
             <div data-role="footer">
-                <p align="center">Listado Cliente</p>
+                <p align="center">Listado Hoteles</p>
+            </div>
+        </div>
+
+        <div data-role="page" id="paginaDatos">
+            <div data-role="header">
+                <h1>Datos Hotel</h1>
+            </div>
+            <div data-role="content">
+
+                <div id="datoHotel"></div>
+                <div id="divMapaDetalle" class="mapa"></div>
+                <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
+
+            </div>
+            <div data-role="footer">
+                <p align="center">Datos Hotel</p>
             </div>
         </div>
 
