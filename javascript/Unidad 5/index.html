@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width = device-width, initial-scale=1" charset="utf-8">
+
+    <link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+
+    <script src="jquery-1.12.1.js"></script>
+    <script src="jquery.mobile-1.4.5.js"></script>
+
+    <script type="text/javascript">
+
+    function cambiarPagina(page) {
+
+        $.mobile.changePage("#" + page, {
+            transition: "flip"
+        });
+
+    }
+
+
+
+    $(document).ready(function() {
+
+        var hoteles = [];
+
+        $("#boton1").click(function() {
+
+            var nombre = $("#nombre").val();
+            var ciudad = $("#ciudad").val();
+            var telefono = $("#telefono").val();
+            var estrellas = $("#estrellas").val();
+
+            var hotel = {
+                nombre: nombre,
+                ciudad: ciudad,
+                telefono: telefono,
+                estrellas: estrellas
+            }
+
+            hoteles.push(hotel);
+
+            alert("Hotel registrado exitosamente")
+
+            limpiarCampos();
+
+        });
+
+
+
+        $("#btnListarHotel").click(function() {
+
+              var tablaHoteles = $("#tablaHoteles");
+              $(".hotel").remove();
+
+                for (var i = 0; i < clientes.length; i++) {
+
+                var tr = $("<tr></tr>");
+                tr.attr("class","hotel");
+
+                var td1 = $("<td></td>").text(hoteles[i].id);
+                var td2 = $("<td></td>").text(hoteles[i].nombre);
+                var td3 = $("<td></td>").text(hoteles[i].direccion);
+                var td4 = $("<td></td>").text(hoteles[i].telefono);
+                var td5 = $("<td></td>").text(hoteles[i].email);
+
+                tr.append(td1);
+                tr.append(td2);
+                tr.append(td3);
+                tr.append(td4);
+                tr.append(td5);
+
+                tablaClientes.append(tr);
+
+
+            }
+
+            cambiarPagina("paginaListar");
+
+
+        });
+
+
+    function limpiarCampos() {
+
+        $("#nombre").val("");
+        $("#ciudad").val("");
+        $("#telefono").val("");
+        $("#estrellas").val("");
+
+    }
+
+
+
+
+    })
+    </script>
+
+    <body>
+        <div data-role="page" id="paginaInicio">
+            <div data-role="header">
+                <h1>Gestión Hotel</h1>
+            </div>
+            <div data-role="content">
+                <form>
+
+                    <a onclick="cambiarPagina('paginaRegistro')" class="ui-btn ui-icon-plus ui-btn-icon-left ui-shadow-icon">Registrar Hotel</a>
+                    <a id="btnListarHotel" class="ui-btn ui-icon-bars ui-btn-icon-left ui-shadow-icon">Listar Hoteles</a>
+
+                </form>
+            </div>
+            <div data-role="footer">
+                <p align="center">Gestión Hotel</p>
+            </div>
+        </div>
+
+
+        <div data-role="page" id="paginaRegistro">
+            <div data-role="header">
+                <h1>Registro Hotel</h1>
+            </div>
+            <div data-role="content">
+                <form>
+                    <div class="ui-field-contain">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre">
+                        <label for="ciudad">Ciudad:</label>
+                        <input type="text" name="ciudad" id="ciudad">
+                        <label for="telefono">Telefono:</label>
+                        <input type="text" name="telefono" id="telefono">
+                        <label for="estrellas">estrellas:</label>
+                        <input type="text" name="estrellas" id="estrellas">
+
+                    </div>
+                    <a id="boton1" class="ui-btn ui-icon-check ui-btn-icon-right ui-shadow-icon">Registrar Hotel </a>
+                    <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
+                </form>
+            </div>
+            <div data-role="footer">
+                <p align="center">Registro Hotel</p>
+            </div>
+        </div>
+
+
+
+        <div data-role="page" id="paginaListar">
+            <div data-role="header">
+                <h1>Listado Cliente</h1>
+            </div>
+            <div data-role="content">
+
+
+                <table id="tablaClientes" style="width:100%" border="1">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>E-mail</th>
+                    </tr>
+
+                </table>
+
+                <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
+
+            </div>
+            <div data-role="footer">
+                <p align="center">Listado Cliente</p>
+            </div>
+        </div>
+
+
+    </body>
+
+</html>
