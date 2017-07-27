@@ -25,12 +25,11 @@
     var longitud = -89.348943;
     var marcadorAgregar;
     var marcadorDetalles;
-    var latlngDetalle;
-
+    var hotelDireccion = { latitud: latitud, longitud:longitud};
     function cambiarPagina(page) {
 
         $.mobile.changePage("#" + page, {
-            transition: "flip"
+            transition: "slide"
         });
 
     }
@@ -46,35 +45,33 @@
         
         
         divDetalle.html(detalles);
-
-        latitud = hoteles[index].latitud;
-        longitud = hoteles[index].longitud; 
+        
+        var latlng = new google.maps.LatLng(hoteles[index].latitud, hoteles[index].longitud); 
 
         $.mobile.changePage("#paginaDatos", {
-            transition: "flip"
+            transition: "flow"
         });
 
-		$('divMapaDetalle').val("");
-
-        setTimeout(function(){
-
-        	latlngDetalle = new google.maps.LatLng(latitud, longitud); 
-
+        setTimeout(function(latlng, title){
             var opciones = {            
                 zoom: 2,
-                center: latlngDetalle,
+                center: latlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP        
             };
 
             var mapaDetalle = new google.maps.Map(document.getElementById("divMapaDetalle"), opciones); 
 
+            var image = 'Hotel.png';
+
             marcadorDetalles = new google.maps.Marker({            
-                position: latlngDetalle,
+                position: latlng,
                 map: mapaDetalle,
-                draggable: false        
+                draggable: false,
+                title: title,
+                icon: image        
             });
 
-        }, 1000);
+        }, 500, latlng, hoteles[index].nombre);
 
     }
 
@@ -90,24 +87,23 @@
               
         var mapa = new google.maps.Map(document.getElementById("divMapa"), opciones);   
 
+        var image = 'Hotel.png';
+
         marcadorAgregar = new google.maps.Marker({            
             position: latlng,
             map: mapa,
             draggable: true,
-            title: "Hotel"        
+            title: "Hotel",
+            icon: image        
         });
 
         google.maps.event.addListener(marcadorAgregar, 'dragend', function(event) {
-        	alert(event.latLng.lat());
-        	alert(event.latLng.lng());
-            latitud = event.latLng.lat();
-            longitud = event.latLng.lng();
+            hotelDireccion = {};
+            hotelDireccion.latitud = event.latLng.lat();
+            hotelDireccion.longitud = event.latLng.lng();
         });
                        
     }
-
-    
-
 
     function limpiarCampos() {
 
@@ -118,18 +114,16 @@
 
     }
 
-    
-
     $(document).ready(function() {
-
+ 
         $("#boton1").click(function() {
 
             var nombre = $("#nombre").val();
             var ciudad = $("#ciudad").val();
             var telefono = $("#telefono").val();
             var estrellas = $("#estrellas").val();
-            var latitud = latitud;
-            var longitud = longitud;
+            var latitud = hotelDireccion.latitud;
+            var longitud = hotelDireccion.longitud;
 
             var hotel = {
                 nombre: nombre,
@@ -164,7 +158,7 @@
             cambiarPagina("paginaListar");
         });
 
-        setTimeout(mostrarMapa(), 2000);
+        mostrarMapa();
 
     });
     </script>
@@ -234,6 +228,20 @@
             </div>
         </div>
 
+        <div data-role="page" id="paginaListarMapa">
+            <div data-role="header">
+                <h1>Registro Hotel</h1>
+            </div>
+            <div data-role="content">
+                <div id="divMapaHoteles" class="mapa"></div>
+                    
+                <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
+            </div>
+            <div data-role="footer">
+                <p align="center">Registro Hotel</p>
+            </div>
+        </div>
+
         <div data-role="page" id="paginaDatos">
             <div data-role="header">
                 <h1>Datos Hotel</h1>
@@ -242,7 +250,7 @@
 
                 <div id="datoHotel"></div>
                 <div id="divMapaDetalle" class="mapa"></div>
-                <a onclick="cambiarPagina('paginaInicio')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
+                <a onclick="cambiarPagina('paginaListar')" class="ui-btn ui-icon-home ui-btn-icon-right ui-shadow-icon">Volver</a>
 
             </div>
             <div data-role="footer">
