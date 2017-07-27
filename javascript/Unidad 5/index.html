@@ -25,6 +25,8 @@
     var longitud = -89.348943;
     var marcadorAgregar;
     var marcadorDetalles;
+    var latlngDetalle;
+
     function cambiarPagina(page) {
 
         $.mobile.changePage("#" + page, {
@@ -45,28 +47,34 @@
         
         divDetalle.html(detalles);
 
-        var latlng = new google.maps.LatLng(hoteles[index].latitud, hoteles[index].longitud); 
+        latitud = hoteles[index].latitud;
+        longitud = hoteles[index].longitud; 
 
         $.mobile.changePage("#paginaDatos", {
             transition: "flip"
         });
 
-        setTimeout(function(latlng){
+		$('divMapaDetalle').val("");
+
+        setTimeout(function(){
+
+        	latlngDetalle = new google.maps.LatLng(latitud, longitud); 
+
             var opciones = {            
                 zoom: 2,
-                center: latlng,
+                center: latlngDetalle,
                 mapTypeId: google.maps.MapTypeId.ROADMAP        
             };
 
             var mapaDetalle = new google.maps.Map(document.getElementById("divMapaDetalle"), opciones); 
 
             marcadorDetalles = new google.maps.Marker({            
-                position: latlng,
+                position: latlngDetalle,
                 map: mapaDetalle,
                 draggable: false        
             });
 
-        }, 5000);
+        }, 1000);
 
     }
 
@@ -90,6 +98,8 @@
         });
 
         google.maps.event.addListener(marcadorAgregar, 'dragend', function(event) {
+        	alert(event.latLng.lat());
+        	alert(event.latLng.lng());
             latitud = event.latLng.lat();
             longitud = event.latLng.lng();
         });
